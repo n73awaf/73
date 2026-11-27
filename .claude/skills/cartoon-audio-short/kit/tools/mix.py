@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Voice-first mix.  python3 mix.py voice.(mp3|wav) music.wav sfx.wav [--out mix_raw.wav]
-Voice is untouched. Music sits at -10 dB and SFX at -12 dB (gated RMS vs the voice). While the voice is
+Voice is untouched. Music sits at -13 dB and SFX at -12 dB (gated RMS vs the voice). While the voice is
 speaking SFX are held to -16 dB under it (loud continuous sounds like horns never cover the narrator);
 in pauses they may rise to -10 dB. SFX peaks are capped at 0.35x the voice peak. Output 48 kHz stereo."""
 import sys, subprocess, numpy as np, wave, tempfile, os
@@ -23,7 +23,7 @@ vw = wr(v); act = vw > 0.02; vg = np.sqrt((vw[act] ** 2).mean()) if act.any() el
 db = lambda d: 10 ** (d / 20)
 def gated(x):
     w = wr(x); a = w > max(1e-4, w.max() * .02); return np.sqrt((w[a] ** 2).mean()) if a.any() else 1e-9
-if m.any(): m = m * (vg * db(-10) / gated(m))
+if m.any(): m = m * (vg * db(-13) / gated(m))
 if s.any():
     s = s * (vg * db(-12) / gated(s))
     sw = wr(s); vloc = sm(vw, 20); speak = sm(act.astype(float), 10) > .15
