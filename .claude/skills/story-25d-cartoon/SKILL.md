@@ -23,6 +23,12 @@ description: >
 - Keep character and animal animations clean and readable: subtle breathing/bobbing, wing flaps, head tilts, and symbolic repeated actions/sounds.
 - Maintain clear framing in vertical (9:16) safe zones so bottom-center Arabic captions never collide with key visual subjects or faces.
 
+## Camera Movement & Shot Transitions
+- **Match motion to emotional beat:** Use slow push-ins for emotional realizations, clues, or key objects; use smooth tracking or high-angle pans for travel, distance, or setting establishment.
+- **Keep camera speeds measured:** Prefer steady, unhurried camera motion that lets viewers read both the visual action and bottom Arabic captions comfortably.
+- **Use purposeful cuts:** Rely on clean hard cuts timed to narration beats, reserving bright or flash transitions for memory shifts and emotional turns.
+- **Avoid shaky or erratic motion:** Keep framing stable and legible across vertical (9:16) shots.
+
 ## Visual Storytelling & Symbolism
 - Break scripts into beat-by-beat visual shots tied directly to voiceover lines.
 - Plant visual motifs early (objects, colors, drawings, sounds, or companion characters) and pay them off emotionally later in the story.
