@@ -17,6 +17,8 @@ export const SAUDI = {
   aunt: { dress: "#241e33", tunic: "#241e33", hijab: "#2f6a6a", skin: "#eec19a" },
   father: { dress: "#f6f1e6", tunic: "#f6f1e6", ghutra: "#f6f1e6", skin: "#e0aa7e", moustache: "#2a1c14", stout: true },
   man: { dress: "#f2efe6", tunic: "#f2efe6", ghutra: "#f2efe6", red: true, skin: "#d6a074", moustache: "#2a1c14" },
+  brother: { top: "#3f8fd2", bottom: "#2f4f6f", skin: "#e2a97e", hairShort: "#241a16", kid: true, slipper: "#e4573d", cheeks: true },
+  guard: { top: "#2b3d5c", bottom: "#1c2638", skin: "#cf9a6c", hairShort: "#241a16", cap: "#1c2638", moustache: "#241a16", slipper: "#15121c", badge: "#e9c46a", stout: true },
   sleeper: { top: "#6c8fb3", bottom: "#4f6f93", skin: "#d6a074", hairShort: "#241a16", moustache: "#2a1c14", slipper: "#2b2b3a" },
 };
 
@@ -86,6 +88,7 @@ export const saudiFront = (p, key, opts = {}) => {
     p.clip(tp, () => {
       if (O.stars) for (const [dx, dy] of [[-0.5, 0.1], [0.4, 0.3], [-0.1, 0.55], [0.55, -0.05], [-0.45, 0.65]]) { const sx = tcx + dx * T.a, sy = chin + (0.15 + dy) * HH; p.poly([[sx, sy - 8 * u], [sx + 2.6 * u, sy - 2.5 * u], [sx + 8 * u, sy - 2 * u], [sx + 3.5 * u, sy + 2 * u], [sx + 5 * u, sy + 8 * u], [sx, sy + 4 * u], [sx - 5 * u, sy + 8 * u], [sx - 3.5 * u, sy + 2 * u], [sx - 8 * u, sy - 2 * u], [sx - 2.6 * u, sy - 2.5 * u]], "#ffcf3a", 0); }
       if (O.bib) { p.poly([[tcx - 0.46 * T.a, chin + 0.1 * HH], [tcx + 0.46 * T.a, chin + 0.1 * HH], [tcx + 0.62 * T.a, torsoBot], [tcx - 0.62 * T.a, torsoBot]], O.bib, 2 * u); for (const sd of [-1, 1]) { p.poly([[tcx + sd * 0.46 * T.a, chin + 0.1 * HH], [tcx + sd * 0.3 * T.a, chin + 0.1 * HH], [tcx + sd * 0.34 * T.a, chin - 0.04 * HH], [tcx + sd * 0.5 * T.a, chin - 0.04 * HH]], O.bib, 2 * u); p.ell(tcx + sd * 0.42 * T.a, chin + 0.2 * HH, 3.2 * u, 3.2 * u, "#ffffff", 1.6 * u); } }
+      if (O.badge) { p.ell(tcx + 0.3 * T.a, chin + 0.35 * HH, 6 * u, 6 * u, O.badge, 1.6 * u); p.band([[tcx - 0.9 * T.a, torsoBot - 0.2 * HH], [tcx + 0.9 * T.a, torsoBot - 0.2 * HH]], "#0e131c", 7 * u, 1.4 * u); }
       if (O.collar) { p.poly([[tcx - 0.5 * T.a, chin + 0.02 * HH], [tcx, chin + 0.2 * HH], [tcx + 0.5 * T.a, chin + 0.02 * HH]], O.collar, 2 * u); }
     });
     p.inkRing(tp, ow, thick);
@@ -140,6 +143,7 @@ export const saudiFront = (p, key, opts = {}) => {
     if (O.clip) p.ell(cx + 0.55 * H.a, hc - 0.62 * H.b, 7 * u, 7 * u, O.clip, 2 * u);
   } else if (O.hairShort) {
     p.clip(hp, () => { p.poly([[cx - 1.3 * H.a, hc - H.b * 1.1], [cx + 1.3 * H.a, hc - H.b * 1.1], [cx + 1.3 * H.a, hc - 0.4 * H.b], [cx, hc - 0.55 * H.b], [cx - 1.3 * H.a, hc - 0.4 * H.b]], O.hairShort, 0); });
+    if (O.cap) { const cp = [[cx - 1.04 * H.a, hc - 0.28 * H.b], [cx - 0.9 * H.a, hc - 0.95 * H.b], [cx, hc - 1.2 * H.b], [cx + 0.9 * H.a, hc - 0.95 * H.b], [cx + 1.04 * H.a, hc - 0.28 * H.b]]; p.gradFill(cp, O.cap, mul(O.cap, SH_CLOTH), light); p.poly(cp, null, ow * 0.9); p.poly([[cx - 1.1 * H.a, hc - 0.28 * H.b], [cx + 1.1 * H.a, hc - 0.28 * H.b], [cx + 1.3 * H.a, hc - 0.14 * H.b], [cx - 1.3 * H.a, hc - 0.14 * H.b]], mul(O.cap, [0.8, 0.8, 0.9]), ow * 0.8); if (O.badge) p.ell(cx, hc - 0.7 * H.b, 7 * u, 7 * u, O.badge, 2 * u); }
   }
   faceFront(p, cx, hc, W, expr, facing, look, lid, false, skin, O.moustache, !!O.stout);
   if (O.cheeks) for (const sd of [-1, 1]) p.ell(cx + 7 * u * facing + sd * 0.55 * H.a, hc + 0.33 * H.b, 0.2 * H.a, 0.11 * H.b, "#f6a79f", 0);

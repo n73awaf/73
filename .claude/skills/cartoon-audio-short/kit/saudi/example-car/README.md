@@ -1,0 +1,1 @@
+Worked example «وين السيارة؟»: mall parking garage (coloured pillars, parked cars) + car wash, brother and guard outfits. main.js already contains the street, interiors, parking and wash; story.js is the shot plan.
