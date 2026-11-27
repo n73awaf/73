@@ -50,3 +50,10 @@ In the cartoon kit she is the outfit `girl` in `kit/saudi/saudi.js` (`saudiFront
 default face). Supporting cast in the same file: mother, aunt (abaya + hijab), father, man (thobe + ghutra), school
 girls, a baby bundle and the blind eared monster. The kit's engine files are Roman-themed; the Saudi street world is
 built per project on top of them.
+
+## Colours (user's standing instruction)
+Do NOT restrict a story to the «تخيّلها» palette (purple/gold). Use whatever colours suit each character, place and
+mood: realistic skin tones, varied clothes (white thobe, black abaya with coloured hijab, school uniforms in different
+colours), warm sand/terracotta/blue houses, natural night blues and lamp ambers, daylight in day scenes. The main
+character keeps her fixed look; the monster is a tall black featureless shadow with only a faint cool rim light.
+Caption highlight colour is chosen per story (coral/amber/white), not the brand yellow.

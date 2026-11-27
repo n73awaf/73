@@ -10,10 +10,10 @@ FACE.hush = { eye: ["lid", "lid"], brow: [-1, -2], mouth: "o" };
 export const SAUDI = {
   girl: { top: "#f4f1e4", bib: "#f2c24c", bottom: "#f2c24c", skin: "#fbd9bf", curly: "#3b3033", band: "#efece0", kid: true, slipper: "#7a4a3a", cheeks: true },
   girlDay: { top: "#e4573d", bottom: "#7a3f4a", skin: "#e8b48a", hairLong: "#2a1a22", clip: "#ffcf3a", kid: true, slipper: "#2b2b3a" },
-  schoolA: { top: "#9aa7c0", bottom: "#4a5670", skin: "#e8b48a", hairLong: "#2a1a22", kid: true, slipper: "#2b2b3a", collar: "#ffffff" },
-  schoolB: { top: "#9aa7c0", bottom: "#4a5670", skin: "#d9a27a", hairLong: "#4a2f22", kid: true, slipper: "#2b2b3a", collar: "#ffffff" },
-  schoolC: { top: "#9aa7c0", bottom: "#4a5670", skin: "#f0c8a2", hairLong: "#1e1714", kid: true, slipper: "#2b2b3a", collar: "#ffffff" },
-  mother: { dress: "#241e33", tunic: "#241e33", hijab: "#6b4e7a", skin: "#eec19a" },
+  schoolA: { top: "#6fa08a", bottom: "#2f5a4a", skin: "#e8b48a", hairLong: "#2a1a22", kid: true, slipper: "#2b2b3a", collar: "#ffffff" },
+  schoolB: { top: "#d98a5a", bottom: "#7a3f2a", skin: "#d9a27a", hairLong: "#4a2f22", kid: true, slipper: "#2b2b3a", collar: "#ffffff" },
+  schoolC: { top: "#7a9ad0", bottom: "#2f3f7a", skin: "#f0c8a2", hairLong: "#1e1714", kid: true, slipper: "#2b2b3a", collar: "#ffffff" },
+  mother: { dress: "#241e33", tunic: "#241e33", hijab: "#b4606f", skin: "#eec19a" },
   aunt: { dress: "#241e33", tunic: "#241e33", hijab: "#2f6a6a", skin: "#eec19a" },
   father: { dress: "#f6f1e6", tunic: "#f6f1e6", ghutra: "#f6f1e6", skin: "#e0aa7e", moustache: "#2a1c14", stout: true },
   man: { dress: "#f2efe6", tunic: "#f2efe6", ghutra: "#f2efe6", red: true, skin: "#d6a074", moustache: "#2a1c14" },
@@ -161,47 +161,34 @@ export const babyCard = (p, o = {}) => {
   if (cry) for (const s of [-1, 1]) { const k = (t * 1.4 + (s > 0 ? 0.5 : 0)) % 1; p.ell(bx + wob + s * 60, by - 150 + k * 70, 7, 11, "#9fd4ff", 3); }
 };
 
-/** the blind, eared creature. step 0..1 walk phase, ear 0..1 perk, mouth 0..1, lean -1..1 */
+/** the monster: a tall black shadow with no readable features. step 0..1 walk phase, ear 0..1 perk, lean -1..1 */
 export const monsterCard = (p, o = {}) => {
-  const { step = 0, ear = 0.5, mouth = 0, lean = 0, twitch = 0, t = 0 } = o, light = rad(-120), thick = thickAngle(light);
-  const BODY = "#3b2f5c", LITE = "#5a4a86", DARK = "#241b3d", CLAW = "#efe8fb", EARIN = "#d98ac3";
-  const sole = 975, sw = Math.sin(step * Math.PI * 2), up = (s) => Math.max(0, Math.sin(Math.PI * 2 * (step + s))) * 34;
-  // legs
+  const { step = 0, ear = 0.5, lean = 0, twitch = 0, t = 0, run = 0 } = o;
+  const BLACK = "#06040b", RIM = "#46527a", g = p.g;
+  const sw = Math.sin(step * Math.PI * 2), up = (s) => Math.max(0, Math.sin(Math.PI * 2 * (step + s))) * 40;
+  const lx = lean * 60, sway = Math.sin(t * 1.3) * 5;
+  const shape = (pts) => { p.poly(pts, BLACK, 0); p.stroke([...pts, pts[0]], 3.2, RIM); };
+  const limb = (pts, w) => { p.stroke(pts, w + 7, RIM); p.stroke(pts, w, BLACK); };
+  // smoky ground haze
+  g.save(); for (let i = 0; i < 6; i++) { g.globalAlpha = 0.3 - i * 0.03; p.ell(300 + (i - 3) * 55 + Math.sin(t * 1.2 + i) * 14, 972 - (i % 2) * 8, 90 + i * 8, 20 + (i % 3) * 6, "#0a0712", 0); } g.restore();
+  // long thin legs
+  for (const s of [-1, 1]) { const hx = 300 + s * 30 + lx * 0.4, fx = 300 + s * 52, fy = 972 - (step ? up(s > 0 ? 0.5 : 0) : 0); limb(curve([hx, 580], [(hx + fx) / 2 + s * 6, (580 + fy) / 2], [fx, fy]), 38); p.stroke([[fx - 22, fy + 2], [fx + 24, fy + 2]], 14, BLACK); }
+  // stretched torso, hunched forward
+  const body = blobPts(300 + lx * 0.7 + sway * 0.3, 410, { a: 76, b: 190, nTop: 2.1, nBot: 2.5, egg: 0.12, asym: 0, rot: 0, noise: 0.014, seed: 41 });
+  shape(body);
+  // very long arms hanging past the knees, spidery fingers
   for (const s of [-1, 1]) {
-    const hx = 300 + s * 58, fx = 300 + s * 78, fy = sole - 8 - (step ? up(s > 0 ? 0.5 : 0) : 0);
-    p.stroke(curve([hx, 700], [(hx + fx) / 2, (700 + fy) / 2], [fx, fy]), 74, s > 0 ? DARK : BODY);
-    for (let c = -1; c <= 1; c++) p.poly([[fx + c * 20 - 8, fy + 2], [fx + c * 20 + 8, fy + 2], [fx + c * 20, fy + 26]], CLAW, 4);
+    const sx = 300 + s * 58 + lx * 0.8, ex = sx + s * 26 + sw * s * 10, hx = sx + s * 14 + sw * s * 26, hy = 880 - Math.abs(sw) * 14;
+    limb(curve([sx, 290], [ex, 590], [hx, hy]), 30);
+    for (let f = -2; f <= 2; f++) p.stroke([[hx, hy], [hx + f * 10 + s * 3, hy + 62 + Math.abs(f) * -6]], 6, BLACK);
   }
-  const lx = lean * 46;
-  // back arm
-  p.stroke(curve([230 + lx, 500], [190 + lx - sw * 20, 650], [200 + lx - sw * 36, 830]), 54, DARK);
-  // hunched body
-  const body = blobPts(300 + lx, 580, { a: 168, b: 205, nTop: 2.0, nBot: 2.6, egg: 0.16, asym: 0, rot: 0, noise: 0.012, seed: 31 });
-  p.gradFill(body, BODY, DARK, light); p.inkRing(body, 10, thick);
-  for (let i = 0; i < 5; i++) { const sx = 160 + lx + i * 6, sy = 450 + i * 50; p.poly([[sx, sy], [sx - 44, sy - 8], [sx - 4, sy - 40]], LITE, 5); }
-  p.clip(body, () => { for (let i = 0; i < 7; i++) p.ell(300 + lx + Math.sin(i * 2.4) * 120, 480 + i * 42, 16, 8, "#4a3c70", 0); });
-  // front arm
-  p.stroke(curve([380 + lx, 500], [420 + lx + sw * 20, 650], [410 + lx + sw * 36, 840 - lean * 40]), 58, BODY);
-  for (let c = -1; c <= 1; c++) p.poly([[410 + lx + sw * 36 + c * 16 - 7, 850 - lean * 40], [410 + lx + sw * 36 + c * 16 + 7, 850 - lean * 40], [410 + lx + sw * 36 + c * 16, 884 - lean * 40]], CLAW, 4);
-  // huge ears
-  const hx = 310 + lx, hy = 330 + lean * 20;
-  const spread = 0.55 + ear * 0.45, flick = twitch ? Math.sin(t * 38) * 0.06 : 0;
-  for (const s of [-1, 1]) {
-    const ang = s * (0.35 + 0.35 * spread) + flick * s, ex = hx + s * 90, ey = hy - 60, len = 250 * (0.8 + 0.3 * ear);
-    const tipx = ex + Math.sin(ang) * len, tipy = ey - Math.cos(ang) * len;
-    const e = [[ex - 46, ey + 30], [ex - 70 + Math.sin(ang) * len * 0.4, ey - len * 0.45], [tipx, tipy], [ex + 70 + Math.sin(ang) * len * 0.4, ey - len * 0.4], [ex + 46, ey + 30]];
-    p.gradFill(e, BODY, DARK, light); p.poly(e, null, 9);
-    const ei = [[ex - 26, ey + 14], [ex - 36 + Math.sin(ang) * len * 0.4, ey - len * 0.42], [tipx + s * 2, tipy + 40], [ex + 36 + Math.sin(ang) * len * 0.4, ey - len * 0.38], [ex + 26, ey + 14]];
-    p.poly(ei, EARIN, 0);
-    for (let k = 0; k < 3; k++) p.stroke([[ex, ey + 6 - k * 38], [ex + Math.sin(ang) * len * 0.46 * (k + 1) / 3, ey - len * 0.5 * (k + 1) / 3 - 10]], 3, "#a8609a");
-  }
-  // blank face: no eyes, no nose
-  const head = blobPts(hx, hy, { a: 120, b: 108, nTop: 2.1, nBot: 2.3, egg: 0.08, asym: 0, rot: 0, noise: 0.01, seed: 17 });
-  p.shadedFill(head, BODY, DARK, light, 120); p.inkRing(head, 10, thick);
-  const face = blobPts(hx + 6, hy + 10, { a: 84, b: 76, nTop: 2.1, nBot: 2.3, egg: 0.05, asym: 0, rot: 0, noise: 0.01, seed: 19 });
-  p.shadedFill(face, LITE, BODY, light, 84); p.poly(face, null, 0);
-  if (mouth > 0.05) { const mh = 14 + 36 * mouth; p.ell(hx + 6, hy + 52, 58, mh, "#150f26", 7); for (let i = -3; i <= 3; i++) p.poly([[hx + 6 + i * 15 - 7, hy + 52 - mh * 0.8], [hx + 6 + i * 15 + 7, hy + 52 - mh * 0.8], [hx + 6 + i * 15, hy + 52 - mh * 0.8 + 22]], CLAW, 3); }
-  else p.stroke([[hx - 46, hy + 54], [hx + 6, hy + 60], [hx + 58, hy + 52]], 7, INK);
+  // small stretched head on a long neck; two thin listening ears
+  const hx = 300 + lx * 1.3 + sway, hy = 196 + Math.abs(lean) * 24;
+  limb([[300 + lx * 0.7, 270], [hx - 4, hy + 40]], 36);
+  const head = blobPts(hx, hy, { a: 46, b: 74, nTop: 2.1, nBot: 2.0, egg: 0.1, asym: 0, rot: 0, noise: 0.012, seed: 43 });
+  shape(head);
+  const spread = 0.12 + ear * 0.22, flick = twitch ? Math.sin(t * 34) * 0.05 : 0;
+  for (const s of [-1, 1]) { const a0 = s * (spread + flick), bx = hx + s * 34, by = hy - 40, tipx = bx + Math.sin(a0 + s * 0.35) * 110, tipy = by - 110 * (0.8 + 0.3 * ear); shape([[bx - 14 * s, by + 28], [bx + s * 24, by - 20], [tipx, tipy], [bx - s * 4, by - 40]]); }
 };
 
 export const fxZzz = (p, t) => {
@@ -213,10 +200,10 @@ export const fxZzz = (p, t) => {
   }
   g.restore();
 };
-export const fxRingWave = (p, k, col = "#ffcf3a") => { // expanding sound rings
+export const fxRingWave = (p, k, col = "#ffd9a0") => { // expanding sound rings
   const g = p.g; g.save();
   for (let i = 0; i < 3; i++) { const kk = (k + i / 3) % 1; g.globalAlpha = Math.max(0, 1 - kk); g.beginPath(); g.arc(300, 500, 40 + kk * 250, 0, Math.PI * 2); g.lineWidth = 22 * (1 - kk * 0.5); g.strokeStyle = INK; g.stroke(); g.lineWidth = 12 * (1 - kk * 0.5); g.strokeStyle = col; g.stroke(); }
   g.restore();
 };
-export const fxFootstep = (p, k) => { const g = p.g; g.save(); g.globalAlpha = Math.max(0, 1 - k); g.beginPath(); g.ellipse(300, 600, 60 + k * 240, 20 + k * 80, 0, 0, Math.PI * 2); g.lineWidth = 14; g.strokeStyle = INK; g.stroke(); g.lineWidth = 7; g.strokeStyle = "#c9a8ff"; g.stroke(); g.restore(); };
+export const fxFootstep = (p, k) => { const g = p.g; g.save(); g.globalAlpha = Math.max(0, 1 - k); g.beginPath(); g.ellipse(300, 600, 60 + k * 240, 20 + k * 80, 0, 0, Math.PI * 2); g.lineWidth = 14; g.strokeStyle = INK; g.stroke(); g.lineWidth = 7; g.strokeStyle = "#a8c4ff"; g.stroke(); g.restore(); };
 export const fxXMark = (p) => { p.stroke([[170, 340], [430, 660]], 60, INK); p.stroke([[430, 340], [170, 660]], 60, INK); p.stroke([[170, 340], [430, 660]], 38, "#e4573d"); p.stroke([[430, 340], [170, 660]], 38, "#e4573d"); };
