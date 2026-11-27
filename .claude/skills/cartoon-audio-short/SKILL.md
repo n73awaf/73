@@ -12,7 +12,7 @@ The look: flat 2D bean-head cartoon characters (canvas-drawn "cards" with plum o
 - No real, named living people as characters, and no brand mascots or logos.
 - No captions unless the user asks. Diegetic text (a carved message, a sign) is fine, and it must read correctly (not mirrored).
 - Never edit or re-time the voice. The picture is timed to it, and every visual reaction lands 0-3 frames before its word.
-- **Audio levels:** the music bed sits at 50 % of the voice level (−6 dB, gated RMS). SFX sit at 50 % or slightly less, with peaks capped so no hit pokes out over the narration. Always mix with `mix.py`, never by hand. Use no ducking or compression that would change this ratio; only one linear gain plus a peak limiter goes on the whole mix.
+- **Audio levels (user's standing rule: the narrator must always be clearly audible):** music sits at −10 dB and SFX at −12 dB under the voice (gated RMS), and while the voice speaks SFX are held to −16 dB under it, so loud continuous sounds (a car horn, crying, alarms) never cover the narration. SFX peaks are capped at 0.35× the voice peak. Always mix with `kit/tools/mix.py` (it is speech-aware and does the ducking); never mix by hand.
 - Keep the user informed with a task list. Send a stills contact sheet before the long render.
 
 ## Stage 1: Intake (always first)
@@ -122,7 +122,7 @@ Send the sheet to the user with a one-line shot summary, then start the full ren
 Rewrite the cue table for the story; the synths stay. `audio.py` writes only stems (`music.wav`, `sfx.wav`).
 - Music: a short march-like loop (kick/snare, plucked bass, brass pad). It stops at the twist line, then a low drone continues.
 - SFX on events (in frames/30): whooshes on big moves, thunk on stamps, rumble+crash on collapses, scrape on metal, ting on reveals, sting on the twist, creaks, snap, splash, snore, leaves, water ambience.
-- Mix with `python3 mix.py voice.mp3 music.wav sfx.wav`. It sets music to exactly 50 % of the voice's gated RMS (−6 dB) and SFX to 50 % with peaks capped at 0.7× the voice peak. It prints the measured levels: confirm music shows −6.0 dB vs voice and SFX is at or below that.
+- Mix with `python3 mix.py voice.mp3 music.wav sfx.wav`. It sets music at −10 dB and SFX at −12 dB (−16 dB while she speaks) and caps SFX peaks. It prints the measured levels: confirm music ≈ −10 dB and SFX ≈ −12 dB or lower.
 - Lock picture timing before making sound. Any timing change means re-running audio.py and mix.py.
 
 ### 4.8 Render + finish
