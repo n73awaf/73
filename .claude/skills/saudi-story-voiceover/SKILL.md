@@ -41,3 +41,12 @@ description: >
 - Continuous loud sounds (a car horn, alarms, crying, sirens, rain) sit much lower: about -15 dB under the
   voice while she speaks, louder only in gaps between sentences.
 - Before delivering, check the mix numbers and listen-check by loudness: no SFX section louder than the voice.
+
+## Main character (fixed for every story, user's standing instruction)
+Always the girl in `references/main-character.jpg`: dark curly hair with a scalloped edge and fringe, a thin white
+headband, round peach face, small black dot eyes with a white highlight, rosy cheeks, small smile, white shirt with
+yellow dungarees (bib, straps and two white buttons). Never redesign her; only her expression and pose change.
+In the cartoon kit she is the outfit `girl` in `kit/saudi/saudi.js` (`saudiFront(p, "girl", opts)`, expr `calm` is her
+default face). Supporting cast in the same file: mother, aunt (abaya + hijab), father, man (thobe + ghutra), school
+girls, a baby bundle and the blind eared monster. The kit's engine files are Roman-themed; the Saudi street world is
+built per project on top of them.
