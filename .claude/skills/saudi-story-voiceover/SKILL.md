@@ -25,11 +25,19 @@ description: >
    Offer a lighter-tashkeel version if the voice sounds theatrical.
 
 ## Step 2: Video (after the user sends the mp3)
-- Style: skill `story-25d-cartoon` (cozy 2.5D, dark outlines, rounded characters, depth blur, mood-shifting palette).
-- 1080×1920, 30fps, MP4 H.264. Camera moves slow and steady, hard cuts on narration beats.
-- Arabic captions on screen use the **plain text without diacritics**, 2–5 words per phrase, synced to the audio
-  (get word timings from the mp3 by forced alignment), bottom-center inside the safe zone
-  (side margin 90px, keep bottom 380px and right 160px clear).
-- Audio: the user's mp3 as the main track, soft ambience/SFX under it, ducking not needed if no music.
-- QA: extract frames at start/middle/end, check captions, RTL, safe zone and sync before sending.
-- Deliver the MP4 with SendUserFile (display: attach).
+- **Look: exactly the `cartoon-audio-short` skill** (flat 2D bean-head cartoon cards with plum outlines in a
+  colourful 3D three.js world, black ink outlines, painted textures, depth-of-field, gliding cameras).
+  Build it with that skill's `kit/` (Stage 4). If the kit folder is missing, ask the user to upload it
+  before building; do not fall back to another style without saying so.
+- 1080x1920, 30fps, MP4 H.264, exactly the voiceover length (+ short tail). Never edit or re-time the voice.
+- Timing: Whisper word timestamps on the mp3 (env `73-video-tools` allows Hugging Face; set
+  HF_HUB_DISABLE_XET=1) matched to the script text.
+- Arabic captions: on for this series (plain text, no diacritics, 2-4 words, word-by-word, keywords in
+  #FFCF3A, inside the safe zone: side 90px, bottom 380px and right 160px clear). Drop them if the user asks.
+
+## Audio rule (the user's standing instruction): the narrator is always clearly on top
+- Music and SFX must never cover the voice. Mix with the kit's `mix.py`: music at 50 % of the voice's gated
+  RMS (-6 dB) or lower, SFX at that level or lower, peaks capped below the voice peak.
+- Continuous loud sounds (a car horn, alarms, crying, sirens, rain) sit much lower: about -15 dB under the
+  voice while she speaks, louder only in gaps between sentences.
+- Before delivering, check the mix numbers and listen-check by loudness: no SFX section louder than the voice.
