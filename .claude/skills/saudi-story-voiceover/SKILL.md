@@ -21,7 +21,11 @@ description: >
    - Loanwords as spoken: بُورِي، الْبِيبِي.
    - Pronoun suffixes: هَا، هُمْ → «ـهُ» written with sukoon: خُطُواتُهْ.
    - Check the pronoun/gender of the narrator and the monster before finalizing.
-4. Deliver: the diacritized text (for ElevenLabs), a short list of risky words, and ask for the mp3.
+4. **Qaf for the TTS (user's standing instruction):** ElevenLabs reads ق as classical /q/. Najdi/Saudi speech says /g/.
+   Always deliver a second, TTS-only copy of the diacritized text with ق written as «گ» (Persian gaf): قال→گال، قلنا→گلنا،
+   وقف→وگف، المواقف→المواگف، أزرق→أزرگ، قبل→گبل، يقول→يگول. Keep ق in the on-screen captions and in the plain script.
+   Tell the user to test one sentence first; fallbacks: ڨ, a pronunciation-dictionary alias, or a Najdi-trained voice.
+4b. Deliver: the diacritized text (for ElevenLabs), a short list of risky words, and ask for the mp3.
    Offer a lighter-tashkeel version if the voice sounds theatrical.
 
 ## Step 2: Video (after the user sends the mp3)
